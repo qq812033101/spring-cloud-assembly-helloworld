@@ -1,0 +1,122 @@
+是什么？
+（Netflix在设计Eureka的时候，遵守的是AP原则）
+一个基于REST的服务，用于定位服务，以实现云端中间层服务发现和故障
+转移。
+服务注册与发现对于微服务架构来说非常重要，有了服务发现与注册，
+只需要使用服务的标识符，就可以访问到服务，而不需要修改服务调用的配
+置文件。
+功能类似于dubbo的注册中心，比如 Zookeeper。
+----------------------------------------------------------------------------------------------------------------------------
+原理
+1 Eureka的基本框架：
+Spring Cloud 封装了 Netflix 公司开发的 Eureka 模块来实现 服务注册
+和发现
+Eureka 采用了 C-S 的设计架构。
+Eureka Server 作为服务注册功能的服务器，它是服务注册中心，而系
+统中采用的其他微服务，使用 Eureka 的客户端连接到 Eureka Server
+并维持心跳接。
+这样系统的维护人员就可以通过 Eureka Sevrer 来监控系统中各个微服
+务是否正常运行。
+spring cloud 的一些其他模块（比如 Zuul）就可以通过 Eureka Server
+来发现系统中的其他微服务，并执行相关逻辑。
+
+
+
+Eureka 包含两大组件 Eureka Server Eureka Client
+Eureka Server提供服务注册发现
+各个节点启动后，会在 Eureka Server中进行注册，这样 Eureka Server中的服务注册表中将会存储所有可用服务节点的信息，服务节点的信息可以在界面中直观的看到
+----------------------------------------------------------------------------------------------------------------------------
+引入 Eureka：
+ 	<!--eureka-server服务端 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+        </dependency>
+
+<!--eureka-client客户端 -->
+<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+
+
+启动类上添加相关注解标签
+@EnableEurekaServer	标明这是一个服务端启动类，接受其他服务注册进来
+@EnableEurekaClient   	客户端，会自动注册进服务端
+----------------------------------------------------------------------------------------------------------------------------
+Eureka自我保护机制：
+
+
+导致原因：某时刻某一个微服务不可用了，eureka不会立即清理，依旧会对该微服务的信息进行保存。
+
+默认情况下，如果 Eureka Server 在一定时间内没有接收到某个微服务的实例心跳，Eureka Server 将会注销该实例（默认90秒）。
+但是当网络分区发生故障时，Eureka Server 之间无法正常通信，以上行为可能变得非常危险了----因为微服务本身是健康的，此时不应该注销该微服务。
+Eureka 通过“自我保护机制”来解决这个问题-----当Eureka Server节点在短时间内丢失过多客户端的时候（可能发生了网络分区故障），那么这个节点就会进入自我保护模式。
+一旦进入该模式，Eureka Server就会保护服务注册表中的信息，不再删除服务注册表中的数据（也就是不会注销任何的微服务）。
+当网络故障恢复后，Eureka Server节点会自动退出自我保护模式。
+
+自我保护模式中，Eureka Server 会保护服务注册表中的信息，不再注销任何服务实例。
+当它收到心跳数重新恢复到阈值以上时，该Eureka Server节点就会自动退出保护模式。
+它的设计哲学就是宁可保留错误的服务注册信息，也不盲目注销任何可能健康的服务实例。也就是 好死不如赖活~
+
+综上，自我保护模式时一种应对网络异常的安全措施。
+
+禁用该模式，通过配置：eureka.server.enable-self-preservation=false
+----------------------------------------------------------------------------------------------------------------------------
+服务发现：
+对于驻注册进 eureka里面的微服务，可以通过服务发现来获取该服务的信息。
+配置方式：
+@Autowired
+    private DiscoveryClient client;
+启动类中添加
+@EnableDiscoveryClient //进行服务发现
+
+//测试代码
+@GetMapping("discovery")
+    public Object discovery()
+    {
+        List<String> list = client.getServices();//盘点微服务
+        System.out.println(list);
+
+        List<ServiceInstance> srvList = client.getInstances("microservicecloud-dept");
+        for (ServiceInstance instance : srvList)
+        {
+            System.out.println(instance.getServiceId() + "\t" +
+            instance.getHost() + "\t" + instance.getPort() + "\t" +
+            instance.getUri()); //遍历获取相关信息
+        }
+        return this.client;
+    }
+----------------------------------------------------------------------------------------------------------------------------
+Actuator  主管监控跟信息配置：
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+父POM配置
+ <build>
+        <!--父工程的名字-->
+        <finalName>microservicecloud</finalName>
+        <!--允许访问该路径下的所有配置文件-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!--解析器-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <delimiters>
+                        <!--以$开头$结尾的才进行解析-->
+                        <delimit>$</delimit>
+                    </delimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+----------------------------------------------------------------------------------------------------------------------------
