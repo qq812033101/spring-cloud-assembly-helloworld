@@ -4,16 +4,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @Classname Microservicecloud_Eureka
+ * @Classname EurekaServer7001_App
  * @Description TODO
- * @Date 2019/1/8 1:01
+ * @Date 2019/1/8 1:21
  * @Created by Mis Yang
  */
 @SpringBootApplication
-public class Microservicecloud_Eureka
+public class EurekaServer7001_App
 {
     public static void main(String[] args)
     {
-        SpringApplication.run(Microservicecloud_Eureka.class);
+        SpringApplication.run(EurekaServer7001_App.class, args);
     }
 }
