@@ -74,7 +74,9 @@
     </dependencyManagement>
 
     <build>
+        <!--父工程的名字-->
         <finalName>microservicecloud</finalName>
+        <!--允许访问该路径下的所有配置文件-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -82,11 +84,13 @@
             </resource>
         </resources>
         <plugins>
+            <!--解析器-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <delimiters>
+                        <!--以$开头$结尾的才进行解析-->
                         <delimit>$</delimit>
                     </delimiters>
                 </configuration>
