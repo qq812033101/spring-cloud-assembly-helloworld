@@ -23,7 +23,8 @@ public class DeptController_Consumer
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String REST_URL_PREFIX = "http://localhost:8001";
+    //private static final String REST_URL_PREFIX = "http://localhost:8001";
+    private static final String REST_URL_PREFIX = "http://microservicecloud-dept";
 
     @RequestMapping("/consumer/dept/add")
     public boolean add(Dept dept)

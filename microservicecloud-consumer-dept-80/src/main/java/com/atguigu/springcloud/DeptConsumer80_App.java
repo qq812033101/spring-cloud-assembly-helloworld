@@ -2,6 +2,8 @@ package com.atguigu.springcloud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 
 /**
  * @Classname DeptConsumer80_App
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Created by Mis Yang
  */
 @SpringBootApplication
+@EnableEurekaClient
 public class DeptConsumer80_App
 {
     public static void main(String[] args)

@@ -8,4 +8,6 @@ microservicecloud-consumer-dept-80 消费者模块，主要用于对外提供访
 microservicecloud-provider-dept-8001 生产者模块，该模块用来真正用来处理请求跟返回数据。
 
 microservicecloud-eureka-7001  eureka服务端模块，用于服务的注册跟发现
+microservicecloud-eureka-7002   负债均衡模块
+microservicecloud-eureka-7003
 
