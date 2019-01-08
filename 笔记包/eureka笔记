@@ -22,6 +22,10 @@ spring cloud 的一些其他模块（比如 Zuul）就可以通过 Eureka Server
 
 
 
+
+
+
+
 Eureka 包含两大组件 Eureka Server Eureka Client
 Eureka Server提供服务注册发现
 各个节点启动后，会在 Eureka Server中进行注册，这样 Eureka Server中的服务注册表中将会存储所有可用服务节点的信息，服务节点的信息可以在界面中直观的看到
@@ -120,3 +124,59 @@ Actuator  主管监控跟信息配置：
         </plugins>
     </build>
 ----------------------------------------------------------------------------------------------------------------------------
+Eureka 集群配置
+同模块直接复制多分。
+yml文件修改
+server端：
+server:
+  port: 7001
+
+eureka:
+  instance:
+    hostname: eureka7001.com #eureka服务端的实例名称
+  client:
+    register-with-eureka: false     #false表示不向注册中心注册自己。
+    fetch-registry: false     #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+    service-url:
+      #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址
+      defaultZone: http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+ 以此类推，只需要修改    defaultZone 即可
+
+客户端：
+    defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+有多少个负载均衡服务就添加多少个，以此类推。
+----------------------------------------------------------------------------------------------------------------------------
+Eureka跟Zookeeper的区别：
+CAP
+CAP原则又称CAP定理，指的是在一个分布式系统中，Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可兼得 。
+
+在传统的关系型数据库中，有一个理念叫 ACID，而NOSQL则是CAP。
+ACID
+ACID，指数据库事务正确执行的四个基本要素的缩写。包含：原子性
+(Atomicity）、一致性（Consistency）、隔离性（Isolation）、持
+久性（Durability）。
+
+Eureka 是AP  Zookeeper 是cp
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

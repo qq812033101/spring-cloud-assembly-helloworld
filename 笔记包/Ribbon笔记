@@ -1,0 +1,78 @@
+是什么？
+spring cloud Ribbon 是 基于Netflix Ribbon实现的一套客户端 负债均衡
+的工具
+简单说，主要功能就是提供客户端的软件负载均衡算法，讲 Netflix 的中间
+层服务连接在一起。
+Ribbon客户端组件提供一系列完善的配置项，如 连接超时，重试等。就是
+在配置文件中列出
+Load Balance（LB）后面所有的机器，Ribbon会自动的帮助你基于某种
+规则（简单轮询，随机连接）去连接这些机器。我们也很容器使用Ribbon
+实现自定义负债均衡算法。
+
+进程内LB
+将LB逻辑集成到消费方，消费方从服务注册中心获知哪些地址可用，然
+后自己在从这些地址中选出一个合适的服务器
+Ribbon 就输入进程内LB，它只是一个类库，集成与消费方进程，消费
+方通过它来获取到服务提供方的地址。
+
+----------------------------------------------------------------------------------------------------------------------------
+怎么玩
+<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-ribbon</artifactId>
+        </dependency>
+
+
+    @Bean
+    @LoadBalanced //在配置类上添加这个注解，以开启客户端的LB
+spring cloud Ribbon 是 基于Netflix Ribbon实现的一套客户端 负
+债均衡
+    public RestTemplate getRestTemplate()
+    {
+        return new RestTemplate();
+    }
+RestTemplate  这是一个REST风格API访问模板，主要用来给消费者提
+供访问接口，目的是把消费者跟生产者进行区分开。
+
+具体用法：
+ @Autowired
+    private RestTemplate restTemplate;
+
+ private static final String REST_URL_PREFIX =
+"http://microservicecloud-dept"；//通过微服务的名称来对这个
+服务进行访问
+
+ @RequestMapping("/consumer/dept/add")
+    public boolean add(Dept dept)
+    {
+        return restTemplate.postForObject(REST_URL_PREFIX +
+        "/dept/add", dept,
+        Boolean.class);
+第一个填写生产者的访问地址，第二个舔需要传递的参数，第三
+个这是返回类型
+    }
+----------------------------------------------------------------------------------------------------------------------------
+
+总结：
+Ribbon 和 Eureka 整合后，消费者端可以直接调用服务，不用关系地
+址和端口号。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
