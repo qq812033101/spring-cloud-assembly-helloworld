@@ -25,39 +25,9 @@ import java.util.List;
 public class DeptController
 {
 
+
+
     @Autowired
-    private DeptService deptService = null;
-
-    @GetMapping("get/{id}")
-    @HystrixCommand(fallbackMethod = "processHystrix_Get")
-    public Dept get(@PathVariable("id") Long id)
-    {
-        Dept dept = this.deptService.findById(id);
-        if (dept == null)
-        {
-            throw new RuntimeException("该ID：" + id + "没有对应的信息");
-        }
-        return dept;
-    }
-
-    public Dept processHystrix_Get(@PathVariable("id") Long id)
-    {
-        return new Dept().setDname("该ID：" + id + "没有对应的信息,null--@HystrixCommand")
-                .setDb_source("no this db in mariadb");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-   /* @Autowired
     private DeptService deptService;
 
     @Qualifier("discoveryClient")
@@ -99,7 +69,7 @@ public class DeptController
     public List<Dept> getAll()
     {
         return deptService.findAll();
-    }*/
+    }
 
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * @Date 2019/1/9 19:13
  * @Created by Mis Yang
  */
-@FeignClient(value = "MICROSERVICECLOUD-DEPT")
+@FeignClient(value = "MICROSERVICECLOUD-DEPT", fallbackFactory = DeptClientServiceFallBackFactory.class)
 @Component
 public interface DeptClientService
 {

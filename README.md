@@ -11,6 +11,7 @@ microservicecloud-provider-dept-8001 生产者模块，该模块用来真正用�
 microservicecloud-provider-dept-8002 生产者负载均衡
 microservicecloud-provider-dept-8003
 
+microservicecloud-provider-dept-hystrix-8001 演示 服务熔断
 
 microservicecloud-eureka-7001  eureka服务端模块，用于服务的注册跟发现
 microservicecloud-eureka-7002  eureka LB

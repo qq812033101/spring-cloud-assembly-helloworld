@@ -32,7 +32,7 @@ public class DeptController_Consumer
         return deptClientService.add(dept);
     }
 
-    @RequestMapping("/consumer/dept/get{id}")
+    @RequestMapping("/consumer/dept/get/{id}")
     public Dept getById(@PathVariable("id") Long id)
     {
         return deptClientService.getById(id);
