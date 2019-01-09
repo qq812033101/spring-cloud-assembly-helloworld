@@ -2,7 +2,6 @@ package com.atguigu.springcloud.dao;
 
 import com.atguigu.springcloud.entites.Dept;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,7 +16,6 @@ import java.util.List;
  * 部门相关的DAO
  */
 @Mapper
-@Repository
 public interface DeptDao
 {
     //添加

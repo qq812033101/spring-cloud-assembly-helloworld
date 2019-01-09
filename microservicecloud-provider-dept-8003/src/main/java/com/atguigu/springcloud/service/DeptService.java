@@ -1,24 +1,20 @@
-package com.atguigu.springcloud.dao;
+package com.atguigu.springcloud.service;
 
 import com.atguigu.springcloud.entites.Dept;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * @Classname DeptDao
+ * @Classname DeptService
  * @Description TODO
- * @Date 2019/1/7 22:29
+ * @Date 2019/1/7 22:42
  * @Created by Mis Yang
  */
 
 /**
- * 部门相关的DAO
+ * 这个接口来处理部门相关的业务
  */
-@Mapper
-@Repository
-public interface DeptDao
+public interface DeptService
 {
     //添加
     boolean addDept(Dept dept);
@@ -26,5 +22,4 @@ public interface DeptDao
     Dept findById(Long id);
     //查找所有
     List<Dept> findAll();
-
 }

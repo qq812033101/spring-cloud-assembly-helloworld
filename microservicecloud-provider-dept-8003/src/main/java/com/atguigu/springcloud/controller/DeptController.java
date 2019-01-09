@@ -3,7 +3,6 @@ package com.atguigu.springcloud.controller;
 import com.atguigu.springcloud.entites.Dept;
 import com.atguigu.springcloud.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -17,7 +16,6 @@ import java.util.List;
  * @Date 2019/1/7 22:46
  * @Created by Mis Yang
  */
-@SuppressWarnings("ALL")
 @RestController
 @RequestMapping("/dept/")
 public class DeptController
@@ -45,7 +43,7 @@ public class DeptController
 
 
     @PostMapping("add")
-    public String add(@RequestBody Dept dept)
+    public String add(Dept dept)
     {
         if (deptService.addDept(dept))
         {
