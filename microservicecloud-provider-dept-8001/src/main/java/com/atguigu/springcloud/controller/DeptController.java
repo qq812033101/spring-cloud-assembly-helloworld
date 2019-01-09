@@ -2,6 +2,8 @@ package com.atguigu.springcloud.controller;
 
 import com.atguigu.springcloud.entites.Dept;
 import com.atguigu.springcloud.service.DeptService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.ribbon.proxy.annotation.Hystrix;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +24,40 @@ import java.util.List;
 @RequestMapping("/dept/")
 public class DeptController
 {
+
     @Autowired
+    private DeptService deptService = null;
+
+    @GetMapping("get/{id}")
+    @HystrixCommand(fallbackMethod = "processHystrix_Get")
+    public Dept get(@PathVariable("id") Long id)
+    {
+        Dept dept = this.deptService.findById(id);
+        if (dept == null)
+        {
+            throw new RuntimeException("该ID：" + id + "没有对应的信息");
+        }
+        return dept;
+    }
+
+    public Dept processHystrix_Get(@PathVariable("id") Long id)
+    {
+        return new Dept().setDname("该ID：" + id + "没有对应的信息,null--@HystrixCommand")
+                .setDb_source("no this db in mariadb");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+   /* @Autowired
     private DeptService deptService;
 
     @Qualifier("discoveryClient")
@@ -64,6 +99,7 @@ public class DeptController
     public List<Dept> getAll()
     {
         return deptService.findAll();
-    }
+    }*/
+
 
 }

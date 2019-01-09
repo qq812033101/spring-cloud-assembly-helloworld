@@ -1,0 +1,55 @@
+feign中整合了Ribbon，默认实现了轮询LB。
+如果需要自定义LB，那么在配置类中按照Ribonn配置LB的方式配置即可
+ @Bean
+    public IRule iRule()
+    {
+        return new RandomRule();
+  //通过配置Ribbon的IRule组件来修改LB算法。
+    }
+
+
+
+是什么？
+
+ 接口加注解的声明式WEB服务调用
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+怎么用？
+导包--
+<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+
+新建一个接口，并添加注解
+
+MICROSERVICECLOUD-DEPT 标明这个接口只会调用这个名称的微服务
+的相关controller方法
+@FeignClient(value = "MICROSERVICECLOUD-DEPT")
+public interface DeptClientService
+{
+    @RequestMapping("/dept/add")
+    这里是生产者微服务的Controller层访问地址，是真实传入数据，返回数
+    据的地址
+    boolean add(Dept dept);
+
+
+    @RequestMapping("/dept/get/{id}")
+    Dept getById(@PathVariable("id") Long id);
+
+
+    @GetMapping("/dept/list")
+    List<Dept> getAll();
+
+}
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------------------------------------------------------

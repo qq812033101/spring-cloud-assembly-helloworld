@@ -11,6 +11,12 @@
 
     <artifactId>microservicecloud-provider-dept-8001</artifactId>
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+
         <!-- 引入自己定义的api通用包，可以使用Dept部门Entity -->
         <dependency>
             <groupId>com.atguigu.springcloud</groupId>

@@ -6,9 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="microservicecloud-provider-dept-hystrix-8001" />
         <module name="microservicecloudapi" />
         <module name="microservicecloudconsumerdept80" />
         <module name="microservicecloudconsumerdeptfeign" />
+        <module name="microservicecloudconsumerhystrixdashboard" />
         <module name="microservicecloudeureka7001" />
         <module name="microservicecloudeureka7002" />
         <module name="microservicecloudeureka7003" />
