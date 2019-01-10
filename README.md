@@ -19,3 +19,7 @@ microservicecloud-eureka-7003
 
 
 
+microservicecloud-config-3344  服务端配置中心
+microservicecloud-config-client-3355 测试-用来读取服务端的配置
+microservicecloud-config-dept-client-8001 从配置中心读取配置的生产者模块
+microservicecloud-config-eureka-client-7001 从配置心读取配置的注册中心模块
